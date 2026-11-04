@@ -9,7 +9,10 @@ command -v $PY >/dev/null || { echo "未找到 python3，请先安装"; exit 1; 
 $PY --version
 
 echo "==> [2/4] 创建独立环境"
-if command -v uv >/dev/null 2>&1; then
+if [ -x .venv/bin/python ]; then
+  echo ".venv 已存在，复用"
+  UV=$(command -v uv >/dev/null 2>&1 && echo 1 || echo 0)
+elif command -v uv >/dev/null 2>&1; then
   echo "使用 uv"
   uv venv .venv --python 3.11 2>/dev/null || uv venv .venv
   UV=1
